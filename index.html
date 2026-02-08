@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahşap Eğitim Setleri - Dijital Katalog</title>
+    <title>Jurassic Kazı Seti - Dijital Katalog</title>
     <style>
         * {
             margin: 0;
@@ -97,7 +97,7 @@
             }
         }
 
-        /* Mobil Landscape (Yatay) - Optimize edilmiş düzen */
+        /* Mobil Landscape (Yatay) - Banner gizli, maksimum alan */
         @media (max-width: 900px) and (orientation: landscape) {
             body {
                 padding: 5px;
@@ -105,7 +105,7 @@
             
             .container {
                 grid-template-columns: 80px 1fr;
-                grid-template-rows: 60px 1fr 50px;
+                grid-template-rows: 1fr 50px;
                 border-radius: 10px;
                 min-height: 95vh;
             }
@@ -115,12 +115,12 @@
         @media (max-width: 700px) and (orientation: landscape) {
             .container {
                 grid-template-columns: 70px 1fr;
-                grid-template-rows: 50px 1fr 45px;
+                grid-template-rows: 1fr 45px;
             }
         }
 
         .header {
-            background: linear-gradient(135deg, #67C090 0%, #67C090 100%);
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -138,33 +138,10 @@
             opacity: 0.9;
         }
 
+        /* Mobil Landscape - Banner tamamen gizle */
         @media (max-width: 900px) and (orientation: landscape) {
             .header {
-                padding: 10px 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.3em;
-                margin-bottom: 3px;
-            }
-            
-            .header p {
-                font-size: 0.8em;
-            }
-        }
-
-        @media (max-width: 700px) and (orientation: landscape) {
-            .header {
-                padding: 8px 12px;
-            }
-            
-            .header h1 {
-                font-size: 1.1em;
-                margin-bottom: 2px;
-            }
-            
-            .header p {
-                font-size: 0.7em;
+                display: none;
             }
         }
 
@@ -188,7 +165,7 @@
             .viewer-container {
                 height: 100%;
                 grid-column: 2 / 3;
-                grid-row: 2 / 3;
+                grid-row: 1 / 2;
             }
         }
 
@@ -216,6 +193,7 @@
             .sidebar-gallery {
                 padding: 10px 5px;
                 gap: 10px;
+                grid-row: 1 / 2;
             }
         }
 
@@ -531,6 +509,7 @@
             .controls {
                 padding: 8px 15px;
                 gap: 10px;
+                grid-row: 2 / 3;
             }
         }
 
@@ -1022,8 +1001,8 @@
 
     <div class="container">
         <div class="header">
-            <h1>🦖 Dinozor 3D Puzzle Koleksiyonu</h1>
-            <p>Ahşap dinozor modellerini keşfedin</p>
+            <h1>🦖 Dinozor 3D Koleksiyonu</h1>
+            <p>Dijital Katalog</p>
         </div>
 
         <div class="sidebar-gallery">

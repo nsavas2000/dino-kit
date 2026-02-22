@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jurassic Kazı Seti - Dijital Katalog</title>
+    <link rel="icon" type="image/x-icon" href="/img/ico.png">
+
     <style>
         * {
             margin: 0;
@@ -583,6 +585,118 @@
             }
         }
 
+        /* Progress Bar Stilleri */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            border-radius: 20px;
+            transition: width 0.3s ease;
+            width: 0%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            font-size: 1em;
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 60px;
+            text-align: center;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobil Landscape için progress bar */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .progress-container {
+                max-width: 300px;
+                gap: 8px;
+                margin: 0 10px;
+            }
+            
+            .progress-bar {
+                height: 8px;
+            }
+            
+            .progress-text {
+                font-size: 0.8em;
+                padding: 3px 8px;
+                min-width: 45px;
+            }
+        }
+
+        @media (max-width: 700px) and (orientation: landscape) {
+            .progress-container {
+                max-width: 200px;
+            }
+        }
+
+        /* Tooltip efekti */
+        .progress-bar:hover::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeIn 0.2s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
         .instructions {
             padding: 20px 30px;
             background: #f8f9fa;
@@ -1050,10 +1164,18 @@
                     🔄 Otomatik Dönüş
                 </button>
             </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">1/29</div>
+            </div>
         </div>
 
         <div class="instructions">
-            <p>🖱️ <strong>Fare ile sürükle:</strong> Modeli döndür | 🔍 <strong>Tekerlek:</strong> Yakınlaş/Uzaklaş | 🔄 <strong>Otomatik Dönüş:</strong> 360° görünüm | 📸 <strong>Ekran görüntüsü:</strong> Modeli kaydet | 🎨 <strong>Renk:</strong> Malzeme değiştir</p>
+            <p>🖱️ <strong>Fare ile sürükle:</strong> Modeli döndür | 🔍 <strong>Tekerlek:</strong> Yakınlaş/Uzaklaş | 🔄 <strong>Otomatik Dönüş:</strong> 360° görünüm | 📸 <strong>Ekran görüntüsü:</strong> Modeli kaydet | 🎨 <strong>Renk:</strong> Malzeme değiştir | 📊 <strong>Progress Bar:</strong> İlerlemeyi gösterir ve tıklanabilir</p>
         </div>
 
         <!-- Dinozor Seçici Butonu -->
@@ -1090,14 +1212,44 @@
         let availableModels = [];
         
         const dinosaurs = {
-            't-rex': { name: 'T-Rex', icon: '🦖', folder: 't-rex', pieces: 14 },
-            'mamut': { name: 'Mamut', icon: '🦣', folder: 'mamut', pieces: 18 },
-            'velociraptor': { name: 'Velociraptor', icon: '🦕', folder: 'velociraptor', pieces: 10 },
-            'tylosaurus': { name: 'Tylosaurus', icon: '🐊', folder: 'tylosaurus', pieces: 10 },
-            'triceratops': { name: 'Triceratops', icon: '🦏', folder: 'triceratops', pieces: 10 },
-            'spinosaurus': { name: 'Spinosaurus', icon: '🦎', folder: 'spinosaurus', pieces: 10 }
+            't-rex': { 
+                name: 'T-Rex Medium', 
+                icon: '🦖', 
+                folder: 't-rex1', 
+                pieces: 29 
+            },
+            'mamut': { 
+                name: 'Mamut', 
+                icon: '🦣', 
+                folder: 'mamut', 
+                pieces: 18 
+            },
+            'velociraptor': { 
+                name: 'Ankylosaurus', 
+                icon: '🐊', 
+                folder: 'ankylosaurus', 
+                pieces: 22 
+            },
+            't-rex-big': { 
+                name: 'T-Rex Big', 
+                icon: '🦖', 
+                folder: 't-rex2', 
+                pieces: 21 
+            },
+            'triceratops': { 
+                name: 'Triceratops', 
+                icon: '🦕', 
+                folder: 'triceratops', 
+                pieces: 14 
+            },
+            'dilophosaurus': { 
+                name: 'Dilophosaurus', 
+                icon: '🦖', 
+                folder: 'dilophosaurus', 
+                pieces: 15 
+            }
         };
-        
+
         function getModelTitle(index) {
             return `Parça ${index + 1}`;
         }
@@ -1150,6 +1302,12 @@
             
             createDinoGrid();
             detectAvailableModels();
+            
+            // Progress bar click özelliğini ekle
+            setTimeout(() => {
+                setupProgressBarClick();
+            }, 100);
+            
             animate();
         }
 
@@ -1272,13 +1430,48 @@
         }
 
         function updateUI() {
-            const dinoName = dinosaurs[currentDinosaur].name;
             const totalPieces = availableModels.length;
             
             document.getElementById('sidebarCounter').textContent = `${currentIndex + 1}/${totalPieces}`;
             
             document.getElementById('scrollUpBtn').disabled = currentIndex === 0;
             document.getElementById('scrollDownBtn').disabled = currentIndex === totalPieces - 1;
+            
+            // Progress bar'ı güncelle
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressFill && progressText) {
+                const totalPieces = availableModels.length;
+                const progress = ((currentIndex + 1) / totalPieces) * 100;
+                
+                progressFill.style.width = `${progress}%`;
+                progressText.textContent = `${currentIndex + 1}/${totalPieces}`;
+                
+                // Tooltip için
+                const progressBar = document.getElementById('progressBar');
+                progressBar.setAttribute('data-tooltip', `Parça ${currentIndex + 1}/${totalPieces}`);
+            }
+        }
+
+        function setupProgressBarClick() {
+            const progressBar = document.getElementById('progressBar');
+            
+            progressBar.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = (x / rect.width) * 100;
+                const totalPieces = availableModels.length;
+                const targetIndex = Math.floor((percentage / 100) * totalPieces);
+                
+                // Güvenli aralık kontrolü
+                const safeIndex = Math.min(Math.max(targetIndex, 0), totalPieces - 1);
+                jumpToModel(safeIndex);
+            });
         }
 
         function nextModel() {
@@ -1301,6 +1494,13 @@
 
         function scrollDown() {
             nextModel();
+        }
+
+        function jumpToModel(index) {
+            if (index >= 0 && index < availableModels.length) {
+                currentIndex = index;
+                loadModel(currentIndex);
+            }
         }
 
         function onWindowResize() {
@@ -1378,13 +1578,6 @@
                 option.classList.remove('active');
             });
             event.target.classList.add('active');
-        }
-
-        function jumpToModel(index) {
-            if (index >= 0 && index < availableModels.length) {
-                currentIndex = index;
-                loadModel(currentIndex);
-            }
         }
 
         function openDinoSelector() {
